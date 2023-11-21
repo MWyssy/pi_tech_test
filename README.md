@@ -2,19 +2,18 @@
 
 The brief for this technical test is as follows:
 
-```
-Please build a single page web application using a framework of your choice.  Data in the application must be stored in a database.  The application can be as simple as a to-do list, or something more imaginative that demonstrates something that interests you.
-
-The application must be able to read and display data from a database.
-
-The application must be able to update data in the database.
-
-The application must be deployed by means of infrastructure as code.
-
-The application deploy process could be handled using a ci/cd pipeline.
-
-future upgrades to the application should be considered when updating the code base (how are these changes rolled out to a deployed application)
-```
+> Please build a single page web application using a framework of your choice.
+> Data in the application must be stored in a database. The application can be as simple as a to-do list, or something more imaginative that demonstrates something that interests you.
+>
+> The application must be able to read and display data from a database.
+>
+> The application must be able to update data in the database.
+>
+> The application must be deployed by means of infrastructure as code.
+>
+> The application deploy process could be handled using a ci/cd pipeline.
+>
+> Future upgrades to the application should be considered when updating the code base (how are these changes rolled out to a deployed application)
 
 ## Structure
 

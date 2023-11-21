@@ -1,0 +1,17 @@
+{
+  "name": "pi_tech_test",
+  "version": "1.0.0",
+  "description": "The brief for this technical test is as follows:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup-db": "psql -f ./backend/db/setup-db.sql",
+    "run-seed": "PGDATABASE=shopping_list node ./backend/db/run-seed.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.11.3"
+  }
+}
