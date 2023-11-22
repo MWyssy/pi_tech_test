@@ -1,6 +1,6 @@
 const db = require("../db/connection");
 
-// Query all items in the shopping list
+// Model to query all items in the shopping list
 exports.selectListItems = () => {
   const data = {};
 
