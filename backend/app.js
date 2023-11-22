@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 const {getHealth} = require("./controllers/api.controller.js");
 const {getListItems} = require("./controllers/list.controller.js");
@@ -19,6 +20,7 @@ const {
 } = require("./controllers/delete.controllers.js");
 
 app.use(express.json());
+app.use(cors());
 
 // Health Check
 app.get("/api/health", getHealth);
