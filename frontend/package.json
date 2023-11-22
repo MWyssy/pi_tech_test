@@ -8,11 +8,7 @@
     "build": "vite build ./frontend",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "setup-db": "psql -f ./backend/db/setup-db.sql",
-    "run-seed": "PGDATABASE=shopping_list node ./backend/db/run-seed.js",
-    "run-server": "PGDATABASE=shopping_list node ./backend/listener.js",
-    "start": "PGDATABASE=shopping_list nodemon backend/listener.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -23,11 +19,6 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "axios": "^1.6.2",
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "nodemon": "^3.0.1",
-    "pg": "^8.11.3",
-    "pg-format": "^1.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

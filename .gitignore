@@ -2,3 +2,7 @@ node_modules
 dist
 dist-ssr
 *.local
+.terraform
+terraform.tfvars
+env.sh
+user_data.sh

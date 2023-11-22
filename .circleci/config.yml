@@ -1,33 +1,51 @@
 version: 2.1
 orbs:
   docker: circleci/docker@2.2.0
+  node: circleci/node@5.1.0
 
 jobs:
-  build-and-publish-backend:
-    executor: docker/docker
-    working_directory: ~/pi_tech_test/backend
+  build-backend:
+    executor: node/default
+    working_directory: ~/pi_tech_test
+    docker:
+      - image: cimg/node:20.2.0
+        tag: latest,1.${CIRCLE_BUILD_NUM}
+        environment:
+          DATABASE_HOST: postgres-db
     steps:
       - setup_remote_docker
       - checkout
-      - docker/check
-      - docker/build:
+      - node/install:
+          node-version: latest
+      - node/install-packages:
           app-dir: ~/pi_tech_test/backend
-          image: mwyssy/sl-be
-          tag: latest,1.${CIRCLE_BUILD_NUM}
       - run:
           command: |
             echo "OCI_USER=$OCI_USER" >> $BASH_ENV
             echo "OCI_FINGERPRINT=$OCI_FINGERPRINT" >> $BASH_ENV
             echo "OCI_TENANCY=$OCI_TENANCY" >> $BASH_ENV
             echo "OCI_REGION=$OCI_REGION" >> $BASH_ENV
-      - docker/push:
-          image: mwyssy/sl-be
-          tag: latest,1.${CIRCLE_BUILD_NUM}
+      - run:
+          name: Start
+          command: nohup nginx -g daemon off &
+  
+  build-database:
+    working_directory: ~/ce-todo-list-project
+    docker:
+      - image: cimg/postgres:14.0
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: shopping_list
+    steps:
+      - checkout
+    
+    
 
 workflows:
   commit:
     jobs:
-      - build-and-publish-backend
+      - build-backend
 
           
           

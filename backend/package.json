@@ -1,0 +1,23 @@
+{
+  "name": "pi_tech_test",
+  "version": "1.0.0",
+  "description": "The brief for this technical test is as follows:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup-db": "psql -f db/setup-db.sql",
+    "run-seed": "PGDATABASE=shopping_list node db/run-seed.js",
+    "run-server": "PGDATABASE=shopping_list node listener.js",
+    "start": "PGDATABASE=shopping_list nodemon listener.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1",
+    "pg": "^8.11.3",
+    "pg-format": "^1.0.4"
+  }
+}
