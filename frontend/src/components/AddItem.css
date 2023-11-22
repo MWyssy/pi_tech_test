@@ -123,6 +123,11 @@ a:hover {
         font-size: 1rem;
         border-radius: 10px;
     }
+
+    .drop-btn {
+        font-size: 1rem;
+        border-radius: 10px;
+    }
   }
   
   @media (min-width: 640px) {
@@ -141,6 +146,11 @@ a:hover {
         font-size: 1.5rem;
         border-radius: 10px;
     }
+
+    .drop-btn {
+        font-size: 1.5rem;
+        border-radius: 10px;
+    }
   }
   
   @media (min-width: 1080px) {
@@ -155,6 +165,11 @@ a:hover {
     }
 
     #addItem-button {
+        font-size: 2rem;
+        border-radius: 15px;
+    }
+
+    .drop-btn {
         font-size: 2rem;
         border-radius: 15px;
     }

@@ -1,14 +1,7 @@
 import './List.css'
-import {useState} from 'react'
 
-function List({ newItem, items, handleClick}) {
-    const [categories, setCategories] = useState([])
-
-    if (!newItem.length) return <></>
-
-    if (!categories.includes(newItem[0])) {
-        setCategories([...categories, newItem[0]])
-    }
+function List({ categories, itemsList, handleClick}) {
+    if (!itemsList) return <></>
 
     return (
         <>
@@ -16,18 +9,37 @@ function List({ newItem, items, handleClick}) {
             
             <ul id='title-list'>
                 {categories.map((category) => {
+
+                    let formattedCat = ''
+                                                
+                    switch (category) {
+                        case 'fruitveg':
+                            formattedCat = 'Fruit and Veg'
+                            break;
+                        case 'meat':
+                            formattedCat = 'Meat and Fish'
+                            break;
+                        case 'essentials':
+                            formattedCat = 'Essential Items'
+                            break;
+                        case 'drinks':
+                            formattedCat = 'Drinks'
+                            break;
+                        case 'other':
+                            formattedCat = 'Other Items'
+                            break;
+                    }
+
                     return <li key={category} className='list-title'>
-                                <h3>{category}</h3>
+                                <h3>{formattedCat}</h3>
                                 <ul className='item-list'>
-                                    {items.map((item) => {
-                                        if (item[0] === category) {
-                                            return <li key={item[1]} className="list-item">
-                                                <button onClick={handleClick} className="list-button">
-                                                    {item[1]}
-                                                </button>
-                                            </li> 
-                                        }
-                                    })}
+                                    {itemsList.hasOwnProperty(category) ? itemsList[category].map((item) => {
+                                        return <li key={`${category}/${item[`${category}_id`]}`} className="list-item">
+                                        <button onClick={handleClick} className="list-button" id={`${category}/${item[`${category}_id`]}`}>
+                                            {item[`${category}_name`]}
+                                        </button>
+                                    </li> 
+                                    }) : console.log("no items")}
                                 </ul>
                             </li>
                 })}

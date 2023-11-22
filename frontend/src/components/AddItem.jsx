@@ -1,23 +1,51 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import List from './List'
 import './AddItem.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCircleDown, faCircleUp} from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios';
 
 function AddItem() {
+    
+    
     const [addItem, setAddItem] = useState({
-        input: '',
-        items: []
+        list: {},
+        input: ''
     })
     const [showMenu, setShowMenu] = useState(false)
     const [category, setCategory] = useState("Select Category")
     const [emptyCategory, setEmptyCategory] = useState(false)
     const [emptyItem, setEmptyItem] = useState(false)
+    const [categories, setCategories] = useState([])
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const request = await axios(`${import.meta.env.VITE_API_BASE_URL}`);
+                const catArray = Object.keys(request.data.items)
+                catArray.forEach((cat) => {
+                    if (request.data.items[cat].length > 0) {
+                        
+                        setCategories(prevCategories => [...prevCategories, cat])
+                        setAddItem({
+                            list: request.data.items,
+                            input: addItem.input,
+                        })
+                        
+                    }
+                })
+            }
+            catch (error) {
+                console.log("Error fetching list items:", error)
+            }
+        };
+        fetchData();
+    }, [])
 
     function handleChange(event) {
         setAddItem({
             input: event.target.value,
-            items: [...addItem.items]
+            list: {...addItem.list}
         })
     }
 
@@ -34,24 +62,83 @@ function AddItem() {
             setEmptyItem(false)
         }
         if (category !== "Select Category" && addItem.input) {   
-            const item = [ category, addItem.input ]
-            setAddItem({
-                items: [...addItem.items, item],
-                input: ''
-            })
+            let url = ''
+
+            switch (category) {
+                case 'Fruit and Veg':
+                    url = 'fruitveg';
+                    break;
+                case 'Meat and Fish':
+                    url = 'meat';
+                    break;
+                case 'Essentials':
+                    url = 'essentials';
+                    break;
+                case 'Drinks':
+                    url = 'drinks';
+                    break;
+                case 'Other':
+                    url = 'other';
+                    break;
+            }
+            
+            try {
+                axios
+                    .post(`${import.meta.env.VITE_API_BASE_URL}${url}`, {
+                        item: addItem.input
+                    })
+                    .then((response) => {
+                        const newList = JSON.parse(JSON.stringify(addItem.list))
+                        
+                        newList[url].push(response.data.listItem)
+
+                        setAddItem({
+                            input: '',
+                            list: newList
+                        });
+                        if (!categories.includes(url)) {
+                            setCategories([...categories, url])
+                        }
+                    })
+
+            } catch (error) {
+                console.log("Error adding item:", error)
+            }
+
         }
     }
 
     function handleClick(event) {
-        setAddItem({
-            items: addItem.items.filter((item) => {
-            if (item[1] !== event.target.firstChild.data) return item
-            }),
-            input: ''
-        })
+        const deletedItemCat = event.target.id.match(/[a-z]/g).join('')
+        try {
+            axios
+                .delete(`${import.meta.env.VITE_API_BASE_URL}${event.target.id}`)
+                .then((response) => {
+                    const newList = JSON.parse(JSON.stringify(addItem.list))
+                    for (const items in newList) {
+                        if (items === deletedItemCat) {
+                            newList[items] = newList[items].filter((item) => {
+                                if (item[`${items}_id`] !== response.data.deletedItem[`${items}_id`]) {
+                                    return item
+                                }
+                            })
+                            if (!newList[items].length) {
+                                setCategories(categories.filter((category) => category !== items))
+                            }
+                        }
+                    }
+                    setAddItem({
+                        input: '',
+                        list: newList
+                    })
+
+                })
+        } catch (error) {
+            console.log("Error deleting item:", error)
+        }
     }
 
-    function handleDrop(event) {
+    function handleDrop() {
         if (showMenu === false) {
             setShowMenu(true)
         } else {
@@ -85,7 +172,7 @@ function AddItem() {
                     </div>
                 </div>
             </form>
-            <List newItem={addItem.items.length ? addItem.items[addItem.items.length - 1] : []} items={addItem.items} handleClick={handleClick}/>
+            <List categories={[...new Set(categories)]} itemsList={addItem.list} handleClick={handleClick}/>
         </>
         )
 }
