@@ -1,0 +1,33 @@
+version: 2.1
+orbs:
+  docker: circleci/docker@2.2.0
+
+jobs:
+  build-and-publish-backend:
+    executor: docker/docker
+    working_directory: ~/pi_tech_test/backend
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - docker/build:
+          app-dir: ~/pi_tech_test/backend
+          image: mwyssy/sl-be
+          tag: latest,1.${CIRCLE_BUILD_NUM}
+      - run:
+          command: |
+            echo "OCI_USER=$OCI_USER" >> $BASH_ENV
+            echo "OCI_FINGERPRINT=$OCI_FINGERPRINT" >> $BASH_ENV
+            echo "OCI_TENANCY=$OCI_TENANCY" >> $BASH_ENV
+            echo "OCI_REGION=$OCI_REGION" >> $BASH_ENV
+      - docker/push:
+          image: mwyssy/sl-be
+          tag: latest,1.${CIRCLE_BUILD_NUM}
+
+workflows:
+  commit:
+    jobs:
+      - build-and-publish-backend
+
+          
+          
