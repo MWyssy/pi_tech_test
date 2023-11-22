@@ -1,0 +1,24 @@
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    background: var(--light); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+html {
+    box-sizing: border-box;
+    font-size: 1rem;
+    scroll-behavior: smooth;
+}
+  
+:root {
+    --dark: rgb(17, 20, 40);
+    --light: rgb(242, 242, 240);
+}
